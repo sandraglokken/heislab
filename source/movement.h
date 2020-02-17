@@ -4,11 +4,13 @@
  *@brief Makes the movement system for the elevator
  *
 */ 
-
+#ifndef MOVEMENT_H
+#define MOVEMENT_H
 
 #include "hardware.h"
 #include <stdlib.h>
 #include "queue_system.h"
+
 
 
 /**
@@ -58,7 +60,7 @@ void set_door();
 
 void set_direction_bit();
 
-
+#endif
 
 
 
