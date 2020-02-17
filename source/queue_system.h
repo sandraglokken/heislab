@@ -5,6 +5,9 @@
  *
 */ 
 
+#ifndef QUEUE_SYSTEM_H
+#define QUEUE_SYSTEM_H
+
 
 #include "hardware.h"
 #include <stdlib.h>
@@ -14,7 +17,6 @@
 */
 
 typedef struct{
-	int current_floor;		/**< The current floor of the elevator*/
 	int array_orders_up[4];		/**< An array for orders up with four elements for the four floors, each containt 0 or 1 for no orders/orders.*/
 	int array_orders_down[4];	/**< An array for orders down with four elements for the four floors, each containt 0 or 1 for no orders/orders.*/
 	int array_orders_inside[4];	/**< An array for orders from the elevator panel with four elements for the four floors, each containt 0 or 1 for no orders/orders.*/
@@ -60,5 +62,5 @@ void delete_orders(Orders orders);
 */
 void add_order(int floor, HardwareOrder order_type, Orders orders);
 
-
+#endif
 
