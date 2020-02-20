@@ -41,8 +41,31 @@ int main(){
     Elevator elevtor;
     Order orders;
     for(int f=0;f<HARDWARE_NUMBER_OF_FLOORS;f++){
+      int i=0;
       if(hardware_read_floor_sensor(f)){
-    hardware_command_movement(HARDWARE_MOVEMENT_UP);
+          i++;
+      }
+      if(i==0){
+        hardware_command_movement(HARDWARE_MOVEMENT_UP);
+      }
+      while(i==0){
+        for(int f=0;f<HARDWARE_NUMBER_OF_FLOORS;f++){
+          if(hardware_read_floor_sensor(f)){
+              i++;
+          }
+        }
+      }
+      hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+      for(int f=0;f<HARDWARE_NUMBER_OF_FLOORS;f++){
+        if(hardware_read_floor_sensor(f)){
+          elevator.current_floor=f;
+        }
+      }
+      elevator.door=0;
+      elevator.obstructin=0;
+      elevtor.direction_bit=0;
+
+
 
     while(1){
         while(hardware_read_stop_signal()){
@@ -58,6 +81,5 @@ int main(){
         }
         set_movement(elevator, orders);
         get_pushed_button_switch_on_lights(orders);
-        //erase_floor_from_orders_switch_of_light(floor,orders);
-        set_current_floor(elevtor);
+        //set_current_floor(elevtor);
 }

@@ -20,7 +20,6 @@ typedef struct{
 	int array_order_queue[HARDWARE_NUMBER_OF_FLOORS]={-1,-1,-1,-1}; /**<An array for order the sequence inside the elevator, no order=-1 */
 	int array_orders_up[4];		/**< An array for orders up with four elements for the four floors, each containt 0 or 1 for no orders/orders.*/
 	int array_orders_down[4];	/**< An array for orders down with four elements for the four floors, each containt 0 or 1 for no orders/orders.*/
-	int array_orders_inside[4];	/**< An array for orders from the elevator panel with four elements for the four floors, each containt 0 or 1 for no orders/orders.*/
 	int next_floor=-1;			/**< The next floor the elevator will stop in, =-1 if no orders*/
 }Orders;
 

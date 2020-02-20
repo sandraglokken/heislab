@@ -18,8 +18,6 @@
 */
 typedef struct{
 	int door;		/**< 0 if the door is closed, 1 if the door is open*/
-	int timer_sec=4;
-	clock_t start_time;
 	int obstruction;	/**< 0 if the obstructin stick is not active, 1 if it is active */
 	int current_floor;	/**< The current floor of the elevator, 0,1,2 or 3*/
 	int direction_bit;	/**< The direction of the elevator, 0 for standstill, 1 for up and 2 for down*/
@@ -78,5 +76,15 @@ void set_current_floor(Elevator elevator);
  * @param orders The order of the elevator with the next floor to go to
 */
 void set_movement(Elevator elevator, Orders orders);
+
+
+
+/**
+ * @brief Stops the elevator in a floor, opens door for 3 secs, checks conditions for closing door before closing
+ *
+ * @param elevator Elevator struct with the current state
+ *
+*/
+void stop_at_floor(Elevator elevator);
 
 #endif

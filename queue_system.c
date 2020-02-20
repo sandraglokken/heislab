@@ -16,19 +16,25 @@ void erase_floor_from_orders_switch_of_light(int floor, Orders orders){
   hardware_command_order_light(floor,HARDWARE_ORDER_INSIDE,0);
 }
 
-void get_pushed_button_switch_on_lights(Order order){
+void get_pushed_button_switch_on_lights(Order orders){
   for(int f=0; f<HARDWARE_NUMBER_OF_FLOORS;f++){
     if(hardware_read_order(f,HARDWARE_ORDER_INSIDE)){
-      add_floor_to_queue(f,order);
+      add_floor_to_queue(f,orders);
       hardware_command_order_light(f,HARDWARE_ORDER_INSIDE,1);
     }
     if(hardware_read_order(f,HARDWARE_ORDER_UP)){
       order.array_orders_up[f]=1;
       hardware_command_order_light(f,HARDWARE_ORDER_UP,1);
+      if(f==0){
+        add_floor_to_queue(f,orders);
+      }
     }
     if(hardware_read_order(f,HARDWARE_ORDER_DOWN)){
       order.array_orders_down[f]=1;
       hardware_command_order_light(f,HARDWARE_ORDER_DOWN,1);
+      if(f==(HARDWARE_NUMBER_OF_FLOORS-1)){
+        add_floor_to_queue(f,orders);
+      }
     }
   }
 }
@@ -50,8 +56,6 @@ void left_shift_elements_in_queue(Orders orders){
   }
   orders.array_order_queue[(HARDWARE_NUMBER_OF_FLOORS-1)]=-1;
 }
-
-
 
 void set_next_floor(Orders orders, Elevator elevator){
   elevator.next_floor=orders.array_order_queue[0];
