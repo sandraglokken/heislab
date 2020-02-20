@@ -7,7 +7,6 @@
 
 #ifndef QUEUE_SYSTEM_H
 #define QUEUE_SYSTEM_H
-#define MAX 50
 
 #include "hardware.h"
 #include <stdlib.h>
@@ -29,7 +28,7 @@ typedef struct{
  * @param floor	The floor that will be erased from @p orders
  * @param orders deletes @p floor from all orders-arrays
 */
-void erase_floor_from_orders(int floor, Orders orders);
+void erase_floor_from_orders(int floor, Orders* orders);
 
 
 /**
@@ -40,7 +39,7 @@ void erase_floor_from_orders(int floor, Orders orders);
  *@param orders Order struct for acessing the queue array
  *
 */
-void add_floor_to_queue(int floor, Orders orders);
+void add_floor_to_queue(int floor, Orders* orders);
 
 
 /**
@@ -48,7 +47,7 @@ void add_floor_to_queue(int floor, Orders orders);
  *
  *@param orders Order struct for acessing the queue array
 */
-void left_shift_elements_in_queue(Orders orders);
+void left_shift_elements_in_queue(Orders* orders);
 
 /**
  *@brief Registrates the pushed buttons from the elevator panel and the floor panel to the arrays in order, and switch on the order lights
@@ -56,7 +55,7 @@ void left_shift_elements_in_queue(Orders orders);
  *@param order The struct to save all three types of orders
  *
 */
-void get_pushed_button_switch_on_lights(Order order);
+void get_pushed_button_switch_on_lights(Order* order);
 
 
 /**
@@ -67,7 +66,7 @@ void get_pushed_button_switch_on_lights(Order order);
  *@param elevator The direction of the elevator, 0 for standstill, 1 for up and 2 for down
  *
 */
-void set_next_floor(Orders orders, Elevator elevator);
+void set_next_floor(Orders* orders, Elevator* elevator);
 
 
 /**
@@ -76,7 +75,7 @@ void set_next_floor(Orders orders, Elevator elevator);
  *@param orders The struct with the orders to delete
  *
 */
-void delete_orders(Orders orders);
+void delete_orders(Orders* orders);
 
 /**
  *@brief Adds a order to @p floor in the right array of orders
@@ -88,6 +87,6 @@ void delete_orders(Orders orders);
  *@param orders @p floor gets added to the right array in this Order struct
  *
 */
-void add_order(int floor, HardwareOrder order_type, Orders orders);
+void add_order(int floor, HardwareOrder order_type, Orders* orders);
 
 #endif

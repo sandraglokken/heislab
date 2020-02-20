@@ -21,10 +21,9 @@ int time_difference(clock_t start_time){
 
 
 
-void while_waiting_3_sec(Orders orders){
+void while_waiting_3_sec(Orders* orders){
   clock_t start_time=start_timer();
   while(time_difference(start_time)<3){
-    get_pushed_button_switch_on_lights(orders)
-
+    get_pushed_button_switch_on_lights(orders);
   }
 }

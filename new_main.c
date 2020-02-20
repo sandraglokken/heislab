@@ -38,8 +38,8 @@ int main(){
 
     printf("=== Example Program ===\n");
     printf("Press the stop button on the elevator panel to exit\n");
-    Elevator elevtor;
-    Order orders;
+    Elevator* elevator;
+    Orders* orders;
     for(int f=0;f<HARDWARE_NUMBER_OF_FLOORS;f++){
       int i=0;
       if(hardware_read_floor_sensor(f)){
@@ -58,25 +58,27 @@ int main(){
       hardware_command_movement(HARDWARE_MOVEMENT_STOP);
       for(int f=0;f<HARDWARE_NUMBER_OF_FLOORS;f++){
         if(hardware_read_floor_sensor(f)){
-          elevator.current_floor=f;
+          elevator->current_floor=f;
         }
       }
-      elevator.door=0;
-      elevator.obstructin=0;
-      elevtor.direction_bit=0;
+      elevator->door=0;
+      elevator->obstructin=0;
+      elevtor->direction_bit=0;
 
 
 
     while(1){
         while(hardware_read_stop_signal()){
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+            hardware_command_stop_light(1);
             for(int f=0;f<HARDWARE_NUMBER_OF_FLOORS;f++){
               if(hardware_read_floor_sensor(f)){
                 set_door(elevator,1);
               }
             }
+          hardware_command_stop_light(0);
         }
-        if(elevator.next_floor==-1){
+        if(elevator->next_floor==-1){
           hardware_command_movement(HARDWARE_MOVEMENT_STOP);
         }
         set_movement(elevator, orders);

@@ -29,7 +29,7 @@ typedef struct{
  *@param elevator To get the status of the door (open/closed)
  *@return Returns 1 if all conditions are met, 0 if not
 */
-int check_movement_conditions(Elevator elevator);
+int check_movement_conditions(Elevator* elevator);
 
 
 /**
@@ -41,7 +41,7 @@ int check_movement_conditions(Elevator elevator);
  *
  * @warning Returns HARDWARE_NUMBER_OF_FLOORS if there is no orders
 */
-int get_next_floor(Orders orders);
+int get_next_floor(Orders* orders);
 
 
 /**
@@ -50,7 +50,7 @@ int get_next_floor(Orders orders);
  * @param elevator Uses elevator.door to set if the door i closed or open.
  * @param door_open Set to 1 to open the door, 0 to close. Sets the value of elevator.door
 */
-void set_door(Elevator elevator, int door_open);
+void set_door(Elevator* elevator, int door_open);
 
 /**
 * @brief Sets Elevator.direction_bit depending on wether the elevator is moving up(2), down(1) or standing still(0).
@@ -58,7 +58,7 @@ void set_door(Elevator elevator, int door_open);
 * @param elevator Elevator struct to set its direction bit
 */
 
-void set_direction_bit(Elevator elevator,int direction);
+void set_direction_bit(Elevator* elevator,int direction);
 
 /**
  * @brief Updates the current floor of the elevator
@@ -67,7 +67,7 @@ void set_direction_bit(Elevator elevator,int direction);
  *
  */
 
-void set_current_floor(Elevator elevator);
+void set_current_floor(Elevator* elevator);
 
 /**
  * @brief Sets the elevator in movement using @c hardware_command_movement and @c get_next_floor
