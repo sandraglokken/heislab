@@ -87,6 +87,8 @@ void delete_orders(Orders* orders);
  *@param orders @p floor gets added to the right array in this Order struct
  *
 */
+/*
 void add_order(int floor, HardwareOrder order_type, Orders* orders);
+*/
 
 #endif

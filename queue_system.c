@@ -57,10 +57,8 @@ void left_shift_elements_in_queue(Orders* orders){
   orders->array_order_queue[(HARDWARE_NUMBER_OF_FLOORS-1)]=-1;
 }
 
-void set_next_floor(Orders* orders, Elevator* elevator){
-  elevator->next_floor=orders->array_order_queue[0];
-  //IKKW FERDIG
-
+void set_next_floor(int next_floor, Elevator* elevator){
+  elevator->next_floor=next_floor;
 }
 
 void delete_orders(Orders* orders){

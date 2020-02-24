@@ -62,6 +62,8 @@ void set_movement(Elevator* elevator, Orders* orders){
 		}
 		if(hardware_read_floor_sensor(next_floor)){
 			stop_at_floor(elevator, elevator->current_floor, orders);
+			int next= (orders->array_order_queue[0]);
+			set_next_floor(next,elevator);
 		}
 	}
 	else{
@@ -77,6 +79,9 @@ void stop_at_floor(Elevator* elevator, int floor, Orders* orders){
 	set_door(elevtor,1);
 	while_waiting_3_sec(orders);
 	while(hardware_read_obstruction_signal()||hardware_read_stop_signal()){
+		if(hardware_read_stop_signal()){
+			hardware_command_stop_light(1);
+		}
 		while_waiting_3_sec(orders);
 	}
 	set_door(elevator,0);
