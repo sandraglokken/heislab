@@ -4,7 +4,10 @@
  *@brief Makes a timer for the door
  *
 */
-#include <timer.h>
+#ifndef TIMER_H
+#define TIMER_H
+
+#include <time.h>
 #include <stdlib.h>
 #include "movement.h"
 
@@ -25,7 +28,7 @@ clock_t start_timer();
  *@return Returns the time difference in sec
 */
 int time_difference(clock_t start_time);
-}
+
 
 /**
  *
@@ -35,3 +38,5 @@ int time_difference(clock_t start_time);
  *
 */
 void while_waiting_3_sec(Orders* orders);
+
+#endif

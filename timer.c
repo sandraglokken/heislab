@@ -11,7 +11,7 @@ clock_t start_timer(){
 int time_difference(clock_t start_time){
   clock_t diff= clock()-start_time;
   int diff_sec=diff/CLOCKS_PER_SEC;
-  return diff;
+  return diff_sec;
 }
 
 void while_waiting_3_sec(Orders* orders){

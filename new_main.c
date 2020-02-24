@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
+#include <string.h>
 #include "hardware.h"
 #include "queue_system.h"
 #include "movement.h"
@@ -36,10 +37,18 @@ int main(){
 
     signal(SIGINT, sigint_handler);
 
-    printf("=== Example Program ===\n");
-    printf("Press the stop button on the elevator panel to exit\n");
-    Elevator* elevator;
-    Orders* orders;
+    printf("=== Elevator Program ===\n");
+   
+    Elevator elevator;
+    memset(&elevator, 0, sizeof(Elevator));
+    Orders orders;
+    memset(&orders, 0, sizeof(Orders));
+    for (int i=0;i<HARDWARE_NUMBER_OF_FLOORS;i++){
+      orders.array_order_queue[i]=-1;
+    }
+    orders.next_floor=-1;
+
+
     for(int f=0;f<HARDWARE_NUMBER_OF_FLOORS;f++){
       int i=0;
       if(hardware_read_floor_sensor(f)){
@@ -55,33 +64,40 @@ int main(){
           }
         }
       }
-      hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-      for(int f=0;f<HARDWARE_NUMBER_OF_FLOORS;f++){
-        if(hardware_read_floor_sensor(f)){
-          elevator->current_floor=f;
-        }
+    }
+    hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+    for(int f=0;f<HARDWARE_NUMBER_OF_FLOORS;f++){
+      if(hardware_read_floor_sensor(f)){
+        elevator.current_floor=f;
       }
-      elevator->door=0;
-      elevator->obstructin=0;
-      elevtor->direction_bit=0;
-
-
+    }
 
     while(1){
         while(hardware_read_stop_signal()){
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             hardware_command_stop_light(1);
-            for(int f=0;f<HARDWARE_NUMBER_OF_FLOORS;f++){
+            clear_all_order_lights();
+            delete_orders(&orders);
+            /*for(int f=0;f<HARDWARE_NUMBER_OF_FLOORS;f++){
               if(hardware_read_floor_sensor(f)){
-                set_door(elevator,1);
+                set_door(&elevator,1, &orders);            
               }
-            }
+            }*/
           hardware_command_stop_light(0);
+          hardware_command_door_open(0);
         }
-        if(elevator->next_floor==-1){
+        if(orders.next_floor==-1){
           hardware_command_movement(HARDWARE_MOVEMENT_STOP);
         }
-        set_movement(elevator, orders);
-        get_pushed_button_switch_on_lights(orders);
-        //set_current_floor(elevtor);
+        for(int f=0;f<HARDWARE_NUMBER_OF_FLOORS;f++){
+           if (hardware_read_floor_sensor(f)){
+             hardware_command_floor_indicator_on(f);
+           }
+        }
+        get_pushed_button_switch_on_lights(&orders);
+        sort_orders(&orders,&elevator);
+        set_movement(&elevator, &orders);
+        set_current_floor(&elevator);
+        //set_next_floor(&orders);
+    }
 }
