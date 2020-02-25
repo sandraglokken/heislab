@@ -65,7 +65,7 @@ void set_movement(Elevator* elevator, Orders* orders){
 	if (check_movement_conditions(elevator,orders)){
 		set_movement_direction(elevator, next_floor);
 	}
-	if(hardware_read_floor_sensor(next_floor)){//flytte den utenfor conditions??
+	if(hardware_read_floor_sensor(next_floor)){
 		set_current_floor(elevator);
 		stop_at_floor( elevator, orders);
 	}
@@ -167,7 +167,12 @@ void check_stop_signal(Orders* orders, Elevator* elevator){
 				hardware_command_stop_light(1);
 				clear_all_order_lights();
 				delete_orders(orders);
+				if(elevator->direction==IDLE){
+					set_door(elevator,1,orders);
+				}
 		}
+		hardware_command_stop_light(0);
+		set_door(elevator,0,orders);
 		while(orders->array_order_queue[0]==-1){
 			get_pushed_button_switch_on_lights(orders);
 		}

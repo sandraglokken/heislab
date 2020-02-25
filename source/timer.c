@@ -17,12 +17,14 @@ int time_difference(clock_t start_time){
 void while_waiting_3_sec(Orders* orders){
   clock_t start_time=start_timer();
   while(time_difference(start_time)<3){
-    get_pushed_button_switch_on_lights(orders);
 		while(hardware_read_stop_signal()){
       start_time = start_timer();
       hardware_command_stop_light(1);
+      delete_orders(orders);
+      clear_all_order_lights();
     }
     hardware_command_stop_light(0);
+    get_pushed_button_switch_on_lights(orders);
     while(hardware_read_obstruction_signal()){
       start_time=start_timer();
       get_pushed_button_switch_on_lights(orders);
