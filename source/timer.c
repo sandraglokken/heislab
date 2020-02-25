@@ -25,6 +25,7 @@ void while_waiting_3_sec(Orders* orders){
     hardware_command_stop_light(0);
     while(hardware_read_obstruction_signal()){
       start_time=start_timer();
+      get_pushed_button_switch_on_lights(orders);
     }
   }
 }

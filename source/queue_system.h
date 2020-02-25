@@ -55,10 +55,10 @@ void left_shift_elements_in_queue(Orders* orders);
 /**
  *@brief Registrates the pushed buttons from the elevator panel and the floor panel to the arrays in order, and switch on the order lights
  *
- *@param order The struct to save all three types of orders
+ *@param orders The struct to save all three types of orders
  *
 */
-void get_pushed_button_switch_on_lights(Orders* order);
+void get_pushed_button_switch_on_lights(Orders* orders);
 
 
 /**

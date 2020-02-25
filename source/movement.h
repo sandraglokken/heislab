@@ -12,6 +12,14 @@
 #include "queue_system.h"
 #include "timer.h"
 
+/**
+ *@brief Enum to describe the movement of the elevator
+ */
+typedef enum{
+	UP,
+	DOWN,
+	IDLE,
+} Direction;
 
 /**
  * @brief Elevator Struct used to set the current state of the elevator
@@ -24,14 +32,7 @@ typedef struct{
 	int above; 			/**< If the elevator is above or under the current_floor, 1 for above, 0 for under*/
 }Elevator;
 
-/**
- *@brief Enum to describe the movement of the elevator
- */
-typedef enum{
-	UP,
-	DOWN,
-	IDLE,
-} Direction;
+
 
 /**
  *@brief Checks all conditions for the elevator to move
@@ -162,12 +163,28 @@ void set_floor_indicators();
 void initialize_elevator(Elevator* elevator);
 
 /**
+ * @brief turns off all order lights for all floors
+ * 
+ */
+void clear_all_order_lights();
+
+/**
+ * @brief Checks if the next floor is the same as current floor in elevator after stopping between floors
+ * 
+ * @param orders checks the next order
+ * 
+ * @param elevator to access the current floor
+ *
+ */
+void after_stopping_between_floors(Orders* orders, Elevator* elevator);
+
+/**
  *
  *@brief Checks if the stop signal, if it is high the elevator is set to stop-state
  *
  *@param orders To access and delete all the orders and order queue
  *
 */
-void check_stop_signal((Orders* orders);
+void check_stop_signal(Orders* orders,Elevator* elevator);
 
 #endif

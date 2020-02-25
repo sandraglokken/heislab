@@ -81,6 +81,7 @@ void delete_orders(Orders* orders){
     orders->array_orders_down[i]=0;
     orders->array_orders_inside[i]=0;
     orders->array_order_queue[i]=-1;
+    orders->next_floor=-1;
   }
 }
 
@@ -91,31 +92,3 @@ void initialize_orders(Orders* orders){
   orders->next_floor=-1;
 
 }
-/*
-void sort_queue_low_high(Orders* orders){
-  for (int i=0;i<HARDWARE_NUMBER_OF_FLOORS;i++){
-    for (int j=i+1;j<HARDWARE_NUMBER_OF_FLOORS;j++){
-      if (orders->array_order_queue[i]>orders->array_order_queue[j]){
-        if (orders->array_order_queue[i]==-1){
-          return;
-        }
-        int copy =orders->array_order_queue[i];
-        orders->array_order_queue[i]=orders->array_order_queue[j];
-        orders->array_order_queue[j]=copy;
-      }
-    }
-  }
-}
-
-void sort_queue_high_low(Orders* orders){
-  for (int i=0;i<HARDWARE_NUMBER_OF_FLOORS;i++){
-    for (int j=i+1;j<HARDWARE_NUMBER_OF_FLOORS;j++){
-      if (orders->array_order_queue[i]<orders->array_order_queue[j]){
-        int copy =orders->array_order_queue[i];
-        orders->array_order_queue[i]=orders->array_order_queue[j];
-        orders->array_order_queue[j]=copy;
-      }
-    }
-  }
-}
-*/

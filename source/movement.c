@@ -46,15 +46,15 @@ void set_current_floor(Elevator* elevator){
 }
 
 void set_movement_direction(Elevator* elevator, int next_floor){
-	int diff_floors = elevator->current_floor - next_floor;
+	int floor_difference = elevator->current_floor - next_floor;
 	if (!hardware_read_floor_sensor(next_floor)){
 		if (floor_difference< 0){
 			hardware_command_movement( HARDWARE_MOVEMENT_UP );
-			set_direction_bit( elevator, UP);
+			set_direction( elevator, UP);
 		}
-		if (floor_differences > 0){
+		if (floor_difference > 0){
 			hardware_command_movement( HARDWARE_MOVEMENT_DOWN );
-			set_direction_bit( elevator, DOWN);
+			set_direction( elevator, DOWN);
 		}
 	}
 }
@@ -64,20 +64,18 @@ void set_movement(Elevator* elevator, Orders* orders){
 	set_current_floor(elevator);
 	if (check_movement_conditions(elevator,orders)){
 		set_movement_direction(elevator, next_floor);
-		if(hardware_read_floor_sensor(next_floor)){//flytte den utenfor conditions??
-			hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-			turn_off_order_lights(elevator->current_floor);
-			erase_floor_from_orders(elevator->current_floor, orders);
-			stop_at_floor( elevator, orders);
-		}
 	}
-	else{
-		hardware_command_movement(HARDWARE_MOVEMENT_STOP);//nødvendig?
+	if(hardware_read_floor_sensor(next_floor)){//flytte den utenfor conditions??
+		set_current_floor(elevator);
+		stop_at_floor( elevator, orders);
 	}
 }
 
 void stop_at_floor(Elevator* elevator, Orders* orders){
-	set_direction_bit( elevator,IDLE);
+	hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+	turn_off_order_lights(orders->next_floor);
+	erase_floor_from_orders(elevator->current_floor, orders);
+	set_direction( elevator,IDLE);
 	set_floor_indicators();
 	set_door( elevator,1, orders);
 	set_door( elevator,0, orders);
@@ -136,12 +134,43 @@ void initialize_elevator(Elevator* elevator){
       }
     }
 }
+void clear_all_order_lights(){
+    HardwareOrder order_types[3] = {
+        HARDWARE_ORDER_UP,
+        HARDWARE_ORDER_INSIDE,
+        HARDWARE_ORDER_DOWN
+    };
 
-void check_stop_signal(Orders* orders){
-	while(hardware_read_stop_signal()){
-			hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-			hardware_command_stop_light(1);
-			clear_all_order_lights();
-			delete_orders(orders);
+    for(int f = 0; f < HARDWARE_NUMBER_OF_FLOORS; f++){
+        for(int i = 0; i < 3; i++){
+            HardwareOrder type = order_types[i];
+            hardware_command_order_light(f, type, 0);
+        }
+    }
+}
+void after_stopping_between_floors(Orders* orders, Elevator* elevator){
+	if(orders->array_order_queue[0]==elevator->current_floor){
+		if(elevator->direction==UP){
+			elevator->current_floor=(elevator->current_floor+1);
+		}
+
+		if(elevator->direction==DOWN){
+			elevator->current_floor=(elevator->current_floor-1);
+		}
 	}
+}
+
+void check_stop_signal(Orders* orders, Elevator* elevator){
+	if(hardware_read_stop_signal()){
+		while(hardware_read_stop_signal()){
+				hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+				hardware_command_stop_light(1);
+				clear_all_order_lights();
+				delete_orders(orders);
+		}
+		while(orders->array_order_queue[0]==-1){
+			get_pushed_button_switch_on_lights(orders);
+		}
+		after_stopping_between_floors(orders,elevator);
+	}	
 }
