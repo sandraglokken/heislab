@@ -32,9 +32,9 @@ int time_difference(clock_t start_time);
 
 /**
  *
- *@brief Waits for 3 seconds while still taking orders and checking the stop button
+ *@brief Waits for 3 seconds while still taking orders and checking the stop button and obstruction signal
  *
- *@param orders The orders struct to access the order arrays
+ *@param orders The orders struct to access the order arrays, in case there are any orders
  *
 */
 void while_waiting_3_sec(Orders* orders);

@@ -38,26 +38,17 @@ int main(){
     signal(SIGINT, sigint_handler);
 
     printf("=== Elevator Program ===\n");
-   
+
     Elevator elevator;
     memset(&elevator, 0, sizeof(Elevator));
     Orders orders;
     memset(&orders, 0, sizeof(Orders));
-    for (int i=0;i<HARDWARE_NUMBER_OF_FLOORS;i++){
-      orders.array_order_queue[i]=-1;
-    }
-    orders.next_floor=-1;
-
-
-    initialize(&elevator);
+    clear_all_order_lights();
+    initialize_orders(&orders)
+    initialize_elevator(&elevator);
 
     while(1){
-        while(hardware_read_stop_signal()){
-            hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-            hardware_command_stop_light(1);
-            clear_all_order_lights();
-            delete_orders(&orders);
-        }
+        check_stop_signal();
         hardware_command_stop_light(0);
         set_floor_indicators();
         get_pushed_button_switch_on_lights(&orders);
