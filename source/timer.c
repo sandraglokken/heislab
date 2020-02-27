@@ -25,9 +25,10 @@ void while_waiting_3_sec(Orders* orders){
     }
     hardware_command_stop_light(0);
     get_pushed_button_switch_on_lights(orders);
-    while(hardware_read_obstruction_signal()){
+    if(hardware_read_obstruction_signal()){
       start_time=start_timer();
-      get_pushed_button_switch_on_lights(orders);
     }
   }
+  turn_off_order_lights(orders->next_floor);
+  erase_floor_from_orders(orders->next_floor, orders); 
 }

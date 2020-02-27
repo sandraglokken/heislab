@@ -74,7 +74,7 @@ void set_movement(Elevator* elevator, Orders* orders){
 void stop_at_floor(Elevator* elevator, Orders* orders){
 	hardware_command_movement(HARDWARE_MOVEMENT_STOP);
 	turn_off_order_lights(orders->next_floor);
-	erase_floor_from_orders(elevator->current_floor, orders);
+	//erase_floor_from_orders(elevator->current_floor, orders);
 	set_direction( elevator,IDLE);
 	set_floor_indicators();
 	set_door( elevator,1, orders);
@@ -126,14 +126,12 @@ void initialize_elevator(Elevator* elevator){
     }
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
     for(int f=0;f<HARDWARE_NUMBER_OF_FLOORS;f++){
-      /*hardware_command_order_light(f,HARDWARE_ORDER_DOWN,0);
-      hardware_command_order_light(f,HARDWARE_ORDER_UP,0);
-      hardware_command_order_light(f,HARDWARE_ORDER_INSIDE,0);*/
       if(hardware_read_floor_sensor(f)){
         elevator->current_floor=f;
       }
     }
 }
+
 void clear_all_order_lights(){
     HardwareOrder order_types[3] = {
         HARDWARE_ORDER_UP,
@@ -175,6 +173,7 @@ void check_stop_signal(Orders* orders, Elevator* elevator){
 		set_door(elevator,0,orders);
 		while(orders->array_order_queue[0]==-1){
 			get_pushed_button_switch_on_lights(orders);
+			check_stop_signal(orders,elevator);
 		}
 		after_stopping_between_floors(orders,elevator);
 	}	

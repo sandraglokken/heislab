@@ -6,10 +6,12 @@
 
 
 void erase_floor_from_orders(int floor, Orders* orders){
-  orders->array_orders_up[floor]=0;
-  orders->array_orders_down[floor]=0;
-  orders->array_orders_inside[floor]=0;
-  left_shift_elements_in_queue(orders);
+  if(floor!=-1){
+    orders->array_orders_up[floor]=0;
+    orders->array_orders_down[floor]=0;
+    orders->array_orders_inside[floor]=0;
+    left_shift_elements_in_queue(orders);
+  }
 }
 
 void add_floor_to_queue(int floor, Orders* orders){
