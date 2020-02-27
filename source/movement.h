@@ -26,10 +26,8 @@ typedef enum{
 */
 typedef struct{
 	int door;		/**< 0 if the door is closed, 1 if the door is open*/
-	int obstruction;	/**< 0 if the obstructin stick is not active, 1 if it is active */
 	int current_floor;	/**< The current floor of the elevator, 0,1,2 or 3*/
 	Direction direction;	/**< The direction of the elevator*/
-	int above; 			/**< If the elevator is above or under the current_floor, 1 for above, 0 for under*/
 }Elevator;
 
 
